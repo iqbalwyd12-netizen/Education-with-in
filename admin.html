@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Education With In</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Manage Content List Styles */
+        .manage-list-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .manage-list-info h4 { margin-bottom: 5px; color: var(--text-color); }
+        .manage-list-info p { font-size: 0.85rem; color: var(--secondary-text); }
+        .manage-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .action-sm { padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; font-size: 0.85rem; color: #fff;}
+        .edit-btn { background: #3b82f6; }
+        .delete-btn { background: #ef4444; }
+        .copy-btn { background: #10b981; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Education With In - Admin</span>
+        </div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="icon-btn" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="index.html" class="yt-btn" style="background-color: #475569;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Site
+            </a>
+        </div>
+    </header>
+
+    <div class="tab-container" style="flex-wrap: wrap;">
+        <button class="tab-btn active" onclick="switchAdminTab('video')">
+            <i class="fa-solid fa-video"></i> Add Video
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('note')">
+            <i class="fa-solid fa-file-pdf"></i> Add Note
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('category')">
+            <i class="fa-solid fa-folder-plus"></i> Categories
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('manage')">
+            <i class="fa-solid fa-list-check"></i> Manage Content
+        </button>
+    </div>
+
+    <main class="content-container" style="max-width: 650px;">
+        
+        <!-- 1. Add/Edit Video Section -->
+        <section id="video-tab" class="admin-tab-content active">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <i class="fa-solid fa-video"></i>
+                    <h2>Upload / Edit Video Class</h2>
+                </div>
+                <form id="addVideoForm" class="admin-form">
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select class="prog-select" id="videoProg" required>
+                            <option value="">Loading Programmes...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select id="videoSem" required>
+                            <option value="">Select Semester...</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Course / Subject Name</label>
+                        <select class="course-select" id="videoCourse" required>
+                            <option value="">Loading Courses...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Block Name/No.</label>
+                            <input type="text" id="videoBlock" placeholder="e.g., Block 1" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Unit Name/No.</label>
+                            <input type="text" id="videoUnit" placeholder="e.g., Unit 2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Video Title</label>
+                        <input type="text" id="videoTitle" placeholder="e.g., Basic Concepts" required>
+                    </div>
+                    <div class="form-group">
+                        <label>YouTube Video ID or Link</label>
+                        <input type="text" id="videoLink" placeholder="e.g., dQw4w9WgXcQ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" id="videoDesc" placeholder="Brief description..." required></textarea>
+                    </div>
+                    <button type="submit" id="videoSubmitBtn" class="action-btn download-btn submit-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Video Class
+                    </button>
+                    <button type="button" id="videoCancelBtn" class="action-btn watch-btn submit-btn" style="display:none; margin-top:10px;" onclick="cancelEdit('video')">
+                        Cancel Edit
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. Add/Edit Note Section -->
+        <section id="note-tab" class="admin-tab-content">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                    <h2>Upload / Edit PDF Note</h2>
+                </div>
+                <form id="addNoteForm" class="admin-form">
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select class="prog-select" id="noteProg" required>
+                            <option value="">Loading Programmes...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select id="noteSem" required>
+                            <option value="">Select Semester...</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Course / Subject Name</label>
+                        <select class="course-select" id="noteCourse" required>
+                            <option value="">Loading Courses...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Block Name/No.</label>
+                            <input type="text" id="noteBlock" placeholder="e.g., Block 1" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 150px;">
+                            <label>Unit Name/No.</label>
+                            <input type="text" id="noteUnit" placeholder="e.g., Unit 2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note Title</label>
+                        <input type="text" id="noteTitle" placeholder="e.g., Complete Notes for Unit 2" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Google Drive PDF Link</label>
+                        <input type="url" id="noteLink" placeholder="https://drive.google.com/..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" id="noteDesc" placeholder="Brief description..." required></textarea>
+                    </div>
+                    <button type="submit" id="noteSubmitBtn" class="action-btn download-btn submit-btn" style="background-color: #2563eb;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload PDF Note
+                    </button>
+                    <button type="button" id="noteCancelBtn" class="action-btn watch-btn submit-btn" style="display:none; margin-top:10px;" onclick="cancelEdit('note')">
+                        Cancel Edit
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. Add Categories Section -->
+        <section id="category-tab" class="admin-tab-content">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <i class="fa-solid fa-folder-plus" style="color: #10b981;"></i>
+                    <h2>Manage Categories</h2>
+                </div>
+                
+                <form id="addProgForm" class="admin-form" style="margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text-color);">1. Add New Programme</h3>
+                    <div class="form-group">
+                        <label>Programme Name</label>
+                        <input type="text" id="newProgName" placeholder="e.g., BA Sociology" required>
+                    </div>
+                    <button type="submit" class="action-btn download-btn submit-btn" style="background-color: #10b981;">
+                        <i class="fa-solid fa-plus"></i> Add Programme
+                    </button>
+                </form>
+
+                <form id="addCourseForm" class="admin-form">
+                    <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text-color);">2. Add New Course</h3>
+                    <div class="form-group">
+                        <label>Select Programme</label>
+                        <select id="newCourseProg" class="prog-select" required>
+                            <option value="">Loading Programmes...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Semester</label>
+                        <select id="newCourseSem" required>
+                            <option value="">Assign to Semester...</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Name</label>
+                        <input type="text" id="newCourseName" placeholder="e.g., Historical Sociology" required>
+                    </div>
+                    <button type="submit" class="action-btn download-btn submit-btn" style="background-color: #10b981;">
+                        <i class="fa-solid fa-plus"></i> Add Course
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 4. Manage Uploaded Content Section -->
+        <section id="manage-tab" class="admin-tab-content">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <i class="fa-solid fa-list-check" style="color: #f59e0b;"></i>
+                    <h2>Manage Uploaded Content</h2>
+                </div>
+                
+                <h3 style="margin-bottom: 15px; color: var(--text-color);">All Videos</h3>
+                <div id="manageVideosList" style="margin-bottom: 30px;">
+                    <p style="text-align: center;">Loading videos...</p>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: var(--text-color);">All Notes</h3>
+                <div id="manageNotesList">
+                    <p style="text-align: center;">Loading notes...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Education With In. Admin Portal.</p>
+    </footer>
+
+    <!-- JavaScript & Backend Integration -->
+    <script>
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-content').forEach(content => content.classList.remove('active'));
+
+            if (tabName === 'video') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('video-tab').classList.add('active');
+            } else if (tabName === 'note') {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('note-tab').classList.add('active');
+            } else if (tabName === 'category') {
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('category-tab').classList.add('active');
+            } else if (tabName === 'manage') {
+                document.querySelectorAll('.tab-btn')[3].classList.add('active');
+                document.getElementById('manage-tab').classList.add('active');
+                loadManageContent();
+            }
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+        }
+
+        const API_BASE_URL = 'https://education-backend-x9vo.onrender.com/api';
+        let editingVideoId = null;
+        let editingNoteId = null;
+        let allCoursesList = [];
+
+        document.addEventListener('DOMContentLoaded', loadCategories);
+
+        async function loadCategories() {
+            try {
+                let progRes = await fetch(`${API_BASE_URL}/programmes`);
+                let programmes = await progRes.json();
+                
+                document.querySelectorAll('.prog-select').forEach(select => {
+                    select.innerHTML = '<option value="">Select Programme...</option>';
+                    programmes.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+                    });
+                });
+
+                let courseRes = await fetch(`${API_BASE_URL}/courses`);
+                allCoursesList = await courseRes.json();
+                
+                // ഫസ്റ്റ് ലോഡിംഗിൽ എല്ലാ കോഴ്സുകളും കാണിക്കുന്നു
+                document.querySelectorAll('.course-select').forEach(select => {
+                    select.innerHTML = '<option value="">Select Course...</option>';
+                    allCoursesList.forEach(c => {
+                        select.innerHTML += `<option value="${c.id}">${c.name} (Sem ${c.semester})</option>`;
+                    });
+                });
+
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+        }
+
+        // ==========================================
+        // DYNAMIC SEMESTER FILTERING LOGIC
+        // ==========================================
+        function filterCoursesBySemester(semesterValue, targetSelectId) {
+            const selectElement = document.getElementById(targetSelectId);
+            selectElement.innerHTML = '<option value="">Select Course...</option>';
+            
+            let filteredCourses = allCoursesList;
+            
+            // സെമസ്റ്റർ തിരഞ്ഞെടുത്തിട്ടുണ്ടെങ്കിൽ മാത്രം ഫിൽറ്റർ ചെയ്യുക
+            if (semesterValue) {
+                filteredCourses = allCoursesList.filter(c => c.semester == semesterValue);
+            }
+            
+            filteredCourses.forEach(c => {
+                selectElement.innerHTML += `<option value="${c.id}">${c.name} (Sem ${c.semester})</option>`;
+            });
+        }
+
+        document.getElementById('videoSem').addEventListener('change', function() {
+            filterCoursesBySemester(this.value, 'videoCourse');
+        });
+
+        document.getElementById('noteSem').addEventListener('change', function() {
+            filterCoursesBySemester(this.value, 'noteCourse');
+        });
+
+        // ==========================================
+        // 1. ADD / EDIT VIDEO
+        // ==========================================
+        document.getElementById('addVideoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                course_id: document.getElementById('videoCourse').value,
+                semester: document.getElementById('videoSem').value,
+                block: document.getElementById('videoBlock').value,
+                unit: document.getElementById('videoUnit').value,
+                title: document.getElementById('videoTitle').value,
+                youtube_id: document.getElementById('videoLink').value,
+                description: document.getElementById('videoDesc').value
+            };
+
+            const method = editingVideoId ? 'PUT' : 'POST';
+            const url = editingVideoId ? `${API_BASE_URL}/videos/${editingVideoId}` : `${API_BASE_URL}/videos`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    alert(editingVideoId ? "Video Successfully Updated!" : "Video Successfully Uploaded!");
+                    cancelEdit('video');
+                }
+            } catch (error) {
+                alert("Error connecting to server!");
+            }
+        });
+
+        // ==========================================
+        // 2. ADD / EDIT NOTE
+        // ==========================================
+        document.getElementById('addNoteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                course_id: document.getElementById('noteCourse').value,
+                semester: document.getElementById('noteSem').value,
+                block: document.getElementById('noteBlock').value,
+                unit: document.getElementById('noteUnit').value,
+                title: document.getElementById('noteTitle').value,
+                pdf_link: document.getElementById('noteLink').value,
+                description: document.getElementById('noteDesc').value
+            };
+
+            const method = editingNoteId ? 'PUT' : 'POST';
+            const url = editingNoteId ? `${API_BASE_URL}/notes/${editingNoteId}` : `${API_BASE_URL}/notes`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    alert(editingNoteId ? "PDF Note Successfully Updated!" : "PDF Note Successfully Uploaded!");
+                    cancelEdit('note');
+                }
+            } catch (error) {
+                alert("Error connecting to server!");
+            }
+        });
+
+        // ==========================================
+        // 3. MANAGE CONTENT (FETCH, EDIT, DELETE, COPY LINK)
+        // ==========================================
+        async function loadManageContent() {
+            try {
+                const vidRes = await fetch(`${API_BASE_URL}/videos`);
+                const videos = await vidRes.json();
+                const videoDiv = document.getElementById('manageVideosList');
+                videoDiv.innerHTML = '';
+                
+                if(videos.length === 0) videoDiv.innerHTML = '<p>No videos uploaded yet.</p>';
+                videos.forEach(v => {
+                    videoDiv.innerHTML += `
+                        <div class="manage-list-item">
+                            <div class="manage-list-info">
+                                <h4>${v.title}</h4>
+                                <p>Sem: ${v.semester} | Block: ${v.block}</p>
+                            </div>
+                            <div class="manage-actions">
+                                <button class="action-sm copy-btn" onclick="copyItemLink('video', ${v.id})"><i class="fa-solid fa-link"></i> Copy Link</button>
+                                <button class="action-sm edit-btn" onclick="setupEditVideo(${v.id}, '${v.course_id}', '${v.semester}', '${v.block}', '${v.unit}', '${v.title.replace(/'/g, "\\'")}', '${v.youtube_id}', '${v.description.replace(/'/g, "\\'")}')">Edit</button>
+                                <button class="action-sm delete-btn" onclick="deleteItem('videos', ${v.id})">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const noteRes = await fetch(`${API_BASE_URL}/notes`);
+                const notes = await noteRes.json();
+                const noteDiv = document.getElementById('manageNotesList');
+                noteDiv.innerHTML = '';
+
+                if(notes.length === 0) noteDiv.innerHTML = '<p>No notes uploaded yet.</p>';
+                notes.forEach(n => {
+                    noteDiv.innerHTML += `
+                        <div class="manage-list-item">
+                            <div class="manage-list-info">
+                                <h4>${n.title}</h4>
+                                <p>Sem: ${n.semester} | Block: ${n.block}</p>
+                            </div>
+                            <div class="manage-actions">
+                                <button class="action-sm copy-btn" onclick="copyItemLink('note', ${n.id})"><i class="fa-solid fa-link"></i> Copy Link</button>
+                                <button class="action-sm edit-btn" onclick="setupEditNote(${n.id}, '${n.course_id}', '${n.semester}', '${n.block}', '${n.unit}', '${n.title.replace(/'/g, "\\'")}', '${n.pdf_link}', '${n.description.replace(/'/g, "\\'")}')">Edit</button>
+                                <button class="action-sm delete-btn" onclick="deleteItem('notes', ${n.id})">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading manage content:", error);
+            }
+        }
+
+        function copyItemLink(type, id) {
+            const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', '');
+            const param = type === 'note' ? 'note_id' : 'video_id';
+            const shareLink = baseUrl + 'index.html?' + param + '=' + id;
+            
+            navigator.clipboard.writeText(shareLink).then(() => {
+                alert("Link Copied Successfully!\n\nPaste this in your YouTube Description:\n" + shareLink);
+            }).catch(err => {
+                alert("Failed to copy link. Please manually copy: " + shareLink);
+            });
+        }
+
+        function setupEditVideo(id, course, sem, block, unit, title, link, desc) {
+            switchAdminTab('video');
+            editingVideoId = id;
+            
+            document.getElementById('videoSem').value = sem;
+            filterCoursesBySemester(sem, 'videoCourse'); // ഡ്രോപ്‌ഡൗൺ ഫിൽറ്റർ ചെയ്യുന്നു
+            document.getElementById('videoCourse').value = course; 
+            
+            document.getElementById('videoBlock').value = block;
+            document.getElementById('videoUnit').value = unit;
+            document.getElementById('videoTitle').value = title;
+            document.getElementById('videoLink').value = link;
+            document.getElementById('videoDesc').value = desc;
+            
+            document.getElementById('videoSubmitBtn').innerHTML = '<i class="fa-solid fa-pen"></i> Update Video Class';
+            document.getElementById('videoCancelBtn').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function setupEditNote(id, course, sem, block, unit, title, link, desc) {
+            switchAdminTab('note');
+            editingNoteId = id;
+            
+            document.getElementById('noteSem').value = sem;
+            filterCoursesBySemester(sem, 'noteCourse'); // ഡ്രോപ്‌ഡൗൺ ഫിൽറ്റർ ചെയ്യുന്നു
+            document.getElementById('noteCourse').value = course;
+
+            document.getElementById('noteBlock').value = block;
+            document.getElementById('noteUnit').value = unit;
+            document.getElementById('noteTitle').value = title;
+            document.getElementById('noteLink').value = link;
+            document.getElementById('noteDesc').value = desc;
+            
+            document.getElementById('noteSubmitBtn').innerHTML = '<i class="fa-solid fa-pen"></i> Update PDF Note';
+            document.getElementById('noteCancelBtn').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function cancelEdit(type) {
+            if(type === 'video') {
+                editingVideoId = null;
+                document.getElementById('addVideoForm').reset();
+                filterCoursesBySemester('', 'videoCourse'); // ഫിൽറ്റർ റീസെറ്റ് ചെയ്യുന്നു
+                document.getElementById('videoSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Video Class';
+                document.getElementById('videoCancelBtn').style.display = 'none';
+            } else {
+                editingNoteId = null;
+                document.getElementById('addNoteForm').reset();
+                filterCoursesBySemester('', 'noteCourse'); // ഫിൽറ്റർ റീസെറ്റ് ചെയ്യുന്നു
+                document.getElementById('noteSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload PDF Note';
+                document.getElementById('noteCancelBtn').style.display = 'none';
+            }
+        }
+
+        async function deleteItem(type, id) {
+            if(confirm(`Are you sure you want to delete this ${type === 'videos' ? 'video' : 'note'}?`)) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/${type}/${id}`, { method: 'DELETE' });
+                    if(response.ok) {
+                        alert("Deleted Successfully!");
+                        loadManageContent();
+                    }
+                } catch(error) {
+                    alert("Failed to delete.");
+                }
+            }
+        }
+
+        // ==========================================
+        // Categories Submit (Programmes & Courses)
+        // ==========================================
+        document.getElementById('addProgForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            const progName = document.getElementById('newProgName').value;
+            try {
+                const response = await fetch(`${API_BASE_URL}/programmes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: progName })
+                });
+                if (response.ok) {
+                    alert("Programme Successfully Added!");
+                    document.getElementById('addProgForm').reset(); 
+                    loadCategories(); 
+                }
+            } catch (error) { alert("Error"); }
+        });
+
+        document.getElementById('addCourseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const progId = document.getElementById('newCourseProg').value;
+            const sem = document.getElementById('newCourseSem').value;
+            const courseName = document.getElementById('newCourseName').value;
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: courseName, semester: sem, programme_id: progId })
+                });
+                if (response.ok) {
+                    alert("Course Successfully Added!");
+                    document.getElementById('addCourseForm').reset();
+                    loadCategories();
+                }
+            } catch (error) { alert("Error"); }
+        });
+    </script>
+</body>
+</html>
