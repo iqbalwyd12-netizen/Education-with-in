@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Education With In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    
+    <style>
+        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .click-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .click-card {
+            background: var(--bg-card); padding: 30px 20px; border-radius: 12px;
+            border: 1px solid var(--border-color); cursor: pointer; text-align: center;
+            transition: all 0.3s ease; box-shadow: var(--shadow-sm); position: relative;
+        }
+        .click-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .click-card i.main-icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; display: block; }
+        .click-card h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
+        .click-card p { font-size: 0.85rem; color: var(--text-muted); }
+        
+        /* 3-Dot Options Menu Styles */
+        .options-btn { position: absolute; top: 12px; right: 12px; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; padding: 5px; border-radius: 50%; }
+        .options-btn:hover { color: var(--primary); background: var(--input-bg); }
+        .dropdown-menu { display: none; position: absolute; top: 40px; right: 10px; background: var(--bg-card); box-shadow: var(--shadow-md); border-radius: 8px; border: 1px solid var(--border-color); z-index: 100; flex-direction: column; overflow: hidden; min-width: 120px; text-align: left; }
+        .dropdown-menu.show { display: flex; }
+        .dropdown-menu button { padding: 10px 15px; border: none; background: transparent; cursor: pointer; text-align: left; font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+        .dropdown-menu button:hover { background: var(--input-bg); color: var(--primary); }
+        .dropdown-menu button.del-btn { color: var(--danger); }
+        .dropdown-menu button.del-btn:hover { background: rgba(239, 68, 68, 0.1); }
+
+        .breadcrumbs { padding: 15px 20px; background: var(--input-bg); border-radius: 10px; margin-bottom: 24px; font-weight: 600; color: var(--primary); }
+        .breadcrumbs span { cursor: pointer; transition: color 0.2s; }
+        .breadcrumbs span:hover { text-decoration: underline; color: var(--primary-hover); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-box { background: var(--bg-card); padding: 32px; border-radius: 16px; width: 90%; max-width: 450px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); }
+    </style>
+</head>
+<body class="dashboard-body" onclick="closeAllDropdowns(event)"> 
+
+    <!-- Login Overlay Screen -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <div class="logo-icon" style="margin: 0 auto 20px auto;"><i class="fa-solid fa-lock"></i></div>
+            <h2 style="font-family: 'Manrope', sans-serif; margin-bottom: 5px;">Admin Login</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Enter your credentials</p>
+            <input type="text" id="adminUsername" class="login-input" placeholder="Username" style="margin-bottom: 15px;">
+            <input type="password" id="adminPassword" class="login-input" placeholder="Password">
+            <p id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-top: 10px; display: none;">Invalid Username or Password!</p>
+            <button onclick="loginAdmin()" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" class="dashboard-layout" style="display: none;">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h2>Education With In</h2>
+                <span class="badge-admin">ADMIN PORTAL</span>
+            </div>
+            <nav class="sidebar-menu">
+                <p class="menu-label">MAIN MENU</p>
+                <button class="tab-btn active" onclick="switchAdminTab('content')"><i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Content</span></button>
+                <button class="tab-btn" onclick="switchAdminTab('manage')"><i class="fa-solid fa-list-check"></i> <span>Manage Data</span></button>
+            </nav>
+            <div class="sidebar-footer"><a href="#" onclick="logoutAdmin()" class="back-link" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></div>
+        </aside>
+
+        <div class="main-content">
+            <header class="topbar">
+                <div class="topbar-search"><h1 class="page-title">Dashboard Overview</h1></div>
+                <div class="topbar-actions">
+                    <button id="theme-toggle" class="icon-btn tooltip"><i class="fa-solid fa-moon"></i></button>
+                    <div class="admin-profile"><img src="https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=fff"><div class="admin-info"><span class="name">Administrator</span></div></div>
+                </div>
+            </header>
+
+            <main class="content-wrapper">
+                
+                <!-- 1. Add Content Section -->
+                <section id="content-tab" class="admin-tab-content active">
+                    <div class="premium-card">
+                        <div class="card-header"><div><h2>Upload New Content</h2><p>Add video classes or PDF notes</p></div><div class="header-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div></div>
+                        
+                        <form id="addContentForm" class="premium-form">
+                            <div class="type-selector-box">
+                                <label><i class="fa-solid fa-layer-group"></i> Select Upload Type</label>
+                                <select id="contentType" onchange="toggleFields()" required>
+                                    <option value="both">Both Video & Note</option><option value="video">Video Only</option><option value="note">Note Only</option>
+                                </select>
+                            </div>
+                            <div class="form-grid">
+                                <!-- Dynamic Cascading Dropdowns -->
+                                <div class="form-group"><label>Programme</label><select class="prog-select" id="contentProg" onchange="filterSemestersForUpload(this.value)" required></select></div>
+                                <div class="form-group"><label>Semester</label><select id="contentSem" onchange="filterCoursesForUpload(this.value)" required><option value="">Select Programme First...</option></select></div>
+                                <div class="form-group full-width"><label>Course / Subject Name</label><select class="course-select" id="contentCourse" required><option value="">Select Semester First...</option></select></div>
+                                
+                                <div class="form-group"><label>Block Name/No.</label><input type="text" id="contentBlock" placeholder="e.g., Block 1" required></div>
+                                <div class="form-group"><label>Unit Name/No. (Optional)</label><input type="text" id="contentUnit" placeholder="e.g., Unit 2"></div>
+                                <div class="form-group full-width"><label>Title (Class or Note Name)</label><input type="text" id="contentTitle" placeholder="Enter title..." required></div>
+                                <div class="form-group full-width" id="videoLinkGroup"><label><i class="fa-brands fa-youtube yt-icon"></i> YouTube Link</label><input type="text" id="videoLink"></div>
+                                <div class="form-group full-width" id="noteLinkGroup"><label><i class="fa-brands fa-google-drive drive-icon"></i> Google Drive Link</label><input type="url" id="noteLink"></div>
+                                <div class="form-group full-width"><label>Detailed Description</label><textarea rows="4" id="contentDesc" required></textarea></div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" id="contentCancelBtn" class="btn-secondary" style="display:none;" onclick="cancelEdit()">Cancel Edit</button>
+                                <button type="submit" id="contentSubmitBtn" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Publish Content</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 2. Drill-Down Manage Data Section -->
+                <section id="manage-tab" class="admin-tab-content">
+                    <div id="category-breadcrumbs" class="breadcrumbs"><span onclick="showView('programmes-view')"><i class="fa-solid fa-house"></i> Programmes</span></div>
+
+                    <!-- Level 1: Programmes View -->
+                    <div id="programmes-view" class="category-view active">
+                        <div class="view-header">
+                            <div><h2 style="font-family: 'Manrope', sans-serif; font-size: 1.25rem;">Manage Data (Programmes)</h2><p style="color: var(--text-muted); font-size: 0.9rem;">Select a programme to view semesters</p></div>
+                            <button class="btn-primary green-btn" onclick="openModal('progModal')"><i class="fa-solid fa-plus"></i> Add Programme</button>
+                        </div>
+                        <div id="programmes-grid" class="click-grid"></div>
+                    </div>
+
+                    <!-- Level 2: Semesters View -->
+                    <div id="semesters-view" class="category-view" style="display: none;">
+                        <div class="view-header">
+                            <div><h2 id="current-prog-title" style="font-family: 'Manrope', sans-serif; font-size: 1.25rem;">Semesters</h2><p style="color: var(--text-muted); font-size: 0.9rem;">Select a semester to view courses</p></div>
+                            <!-- NEW: Add Semester Button -->
+                            <button class="btn-primary" style="background: var(--primary);" onclick="openModal('semModal')"><i class="fa-solid fa-plus"></i> Add Semester</button>
+                        </div>
+                        <div id="semesters-grid" class="click-grid"></div>
+                    </div>
+
+                    <!-- Level 3: Courses View -->
+                    <div id="courses-view" class="category-view" style="display: none;">
+                        <div class="view-header">
+                            <div><h2 id="current-sem-title" style="font-family: 'Manrope', sans-serif; font-size: 1.25rem;">Courses</h2><p style="color: var(--text-muted); font-size: 0.9rem;">Select a course to view contents</p></div>
+                            <button class="btn-primary purple-btn" onclick="openModal('courseModal')"><i class="fa-solid fa-plus"></i> Add Course</button>
+                        </div>
+                        <div id="courses-grid" class="click-grid"></div>
+                    </div>
+
+                    <!-- Level 4: Content View -->
+                    <div id="course-content-view" class="category-view" style="display: none;">
+                        <div class="view-header">
+                            <div><h2 id="current-course-title" style="font-family: 'Manrope', sans-serif; font-size: 1.25rem;">Uploaded Content</h2></div>
+                            <button class="btn-primary" onclick="switchAdminTab('content')"><i class="fa-solid fa-cloud-arrow-up"></i> Upload New</button>
+                        </div>
+                        <div class="manage-sections-grid" style="padding:0; grid-template-columns: 1fr 1fr; display: grid; gap: 24px;">
+                            <div class="premium-card"><div class="card-header"><h3><i class="fa-solid fa-video"></i> Video Classes</h3></div><div id="drillVideosList" style="padding: 16px;"></div></div>
+                            <div class="premium-card"><div class="card-header"><h3><i class="fa-solid fa-file-pdf"></i> PDF Notes</h3></div><div id="drillNotesList" style="padding: 16px;"></div></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Add Programme Modal -->
+    <div id="progModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2 style="margin-bottom: 20px; font-family: 'Manrope', sans-serif;"><i class="fa-solid fa-graduation-cap" style="color:var(--success);"></i> Add/Edit Programme</h2>
+            <form id="addProgForm">
+                <div class="form-group"><label>Programme Name</label><input type="text" id="newProgName" placeholder="e.g., BA Sociology" required></div>
+                <div class="form-actions" style="border-top: none; padding-top: 10px; margin-top: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeModal('progModal'); cancelProgEdit();">Cancel</button>
+                    <button type="submit" id="progSubmitBtn" class="btn-primary green-btn"><i class="fa-solid fa-check"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Semester Modal (NEW) -->
+    <div id="semModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2 style="margin-bottom: 20px; font-family: 'Manrope', sans-serif;"><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Add/Edit Semester</h2>
+            <form id="addSemForm">
+                <input type="hidden" id="newSemProg">
+                <div class="form-group"><label>Semester Name</label><input type="text" id="newSemName" placeholder="e.g., Semester 1" required></div>
+                <div class="form-actions" style="border-top: none; padding-top: 10px; margin-top: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeModal('semModal'); cancelSemEdit();">Cancel</button>
+                    <button type="submit" id="semSubmitBtn" class="btn-primary"><i class="fa-solid fa-check"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Course Modal -->
+    <div id="courseModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2 style="margin-bottom: 20px; font-family: 'Manrope', sans-serif;"><i class="fa-solid fa-book-open" style="color:var(--purple);"></i> Add/Edit Course</h2>
+            <form id="addCourseForm">
+                <input type="hidden" id="newCourseSem">
+                <div class="form-group"><label>Course Name</label><input type="text" id="newCourseName" placeholder="e.g., Historical Sociology" required></div>
+                <div class="form-actions" style="border-top: none; padding-top: 10px; margin-top: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeModal('courseModal'); cancelCourseEdit();">Cancel</button>
+                    <button type="submit" id="courseSubmitBtn" class="btn-primary purple-btn"><i class="fa-solid fa-check"></i> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        
+        // Function to handle 3-dot dropdown logic
+        function toggleDropdown(event, dropdownId) {
+            event.stopPropagation(); // Prevent card click
+            closeAllDropdowns(); // Close others first
+            document.getElementById(dropdownId).classList.toggle("show");
+        }
+        function closeAllDropdowns() {
+            var dropdowns = document.getElementsByClassName("dropdown-menu");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+
+    <script src="admin-core.js"></script>
+    <script src="admin-forms.js"></script>
+    <script src="admin-manage.js"></script>
+</body>
+</html>
