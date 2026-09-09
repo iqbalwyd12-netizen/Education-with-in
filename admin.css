@@ -508,13 +508,6 @@ body.dashboard-body {
 .edit-btn { background: var(--primary); }
 .delete-btn { background: var(--danger); }
 
-/* Responsive */
-@media (max-width: 992px) {
-    .sidebar { transform: translateX(-100%); }
-    .main-content { margin-left: 0; }
-    .grid-layout-2, .manage-sections-grid, .form-grid { grid-template-columns: 1fr; }
-}
-
 /* --- Login Screen Styles --- */
 .login-overlay {
     position: fixed;
@@ -555,4 +548,124 @@ body.dashboard-body {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* =========================================
+   ADMIN PANEL - MOBILE RESPONSIVENESS
+   ========================================= */
+@media screen and (max-width: 768px) {
+    /* ഡാഷ്‌ബോർഡ് ലേഔട്ട് താഴേക്ക് മാറ്റുന്നു */
+    .dashboard-layout {
+        flex-direction: column !important;
+        display: flex;
+    }
+    
+    /* സൈഡ്ബാർ മൊബൈലിൽ മുകളിലായി കാണിക്കാൻ */
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        padding: 15px !important;
+        display: flex;
+        flex-direction: column;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    /* മെനു ബട്ടണുകൾ വരിവരിയായി വരാൻ */
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 15px;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .menu-label {
+        display: none; /* MAIN MENU എന്ന ടെക്സ്റ്റ് ഒഴിവാക്കുന്നു */
+    }
+    
+    .tab-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    /* ലോഗൗട്ട്, ബാക്ക് ബട്ടണുകൾ */
+    .sidebar-footer {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-color);
+        padding-bottom: 0;
+    }
+
+    .sidebar-footer .back-link {
+        margin-top: 0 !important;
+        font-size: 0.9rem;
+    }
+    
+    /* മെയിൻ കണ്ടന്റ് സ്ക്രീനിൽ ഒതുക്കാൻ */
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+        height: auto;
+    }
+    
+    .topbar-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Content Wrapper Padding adjustments */
+    .content-wrapper {
+        padding: 15px;
+    }
+
+    /* ഫോമുകൾ മാറ്റുന്നു */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* മാനേജ് സെക്ഷനിലെ കാർഡുകൾ ഒന്നായി കാണിക്കാൻ */
+    .manage-sections-grid {
+        grid-template-columns: 1fr !important;
+        padding: 10px;
+    }
+    
+    .click-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .view-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .view-header button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-icon {
+        align-self: flex-start;
+    }
 }
