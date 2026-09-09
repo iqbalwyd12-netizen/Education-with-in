@@ -374,20 +374,9 @@ body.dashboard-body {
 .purple-btn { background: var(--purple); }
 .purple-btn:hover { background: #7c3aed; }
 
-/* --- Drill-down UI Styles (Categories & Semesters) --- */
-.view-header {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 20px; 
-}
-
-.click-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-    gap: 20px; 
-}
-
+/* --- Drill-down UI Styles --- */
+.view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.click-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 .click-card {
     background: var(--bg-card);
     padding: 30px 20px;
@@ -398,29 +387,10 @@ body.dashboard-body {
     transition: all 0.3s ease;
     box-shadow: var(--shadow-sm);
 }
-
-.click-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
-
-.click-card i { 
-    font-size: 2rem; 
-    color: var(--primary); 
-    margin-bottom: 15px; 
-}
-
-.click-card h4 { 
-    font-size: 1.1rem; 
-    color: var(--text-main); 
-    margin-bottom: 5px; 
-}
-
-.click-card p { 
-    font-size: 0.85rem; 
-    color: var(--text-muted); 
-}
+.click-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.click-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+.click-card h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
+.click-card p { font-size: 0.85rem; color: var(--text-muted); }
 
 .breadcrumbs {
     padding: 15px 20px;
@@ -430,47 +400,19 @@ body.dashboard-body {
     font-weight: 600;
     color: var(--primary);
 }
-
-.breadcrumbs span { 
-    cursor: pointer; 
-    transition: color 0.2s; 
-}
-
-.breadcrumbs span:hover { 
-    text-decoration: underline; 
-    color: var(--primary-hover); 
-}
+.breadcrumbs span { cursor: pointer; transition: color 0.2s; }
+.breadcrumbs span:hover { text-decoration: underline; color: var(--primary-hover); }
 
 /* --- Modal Styles --- */
 .modal-overlay {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: rgba(0,0,0,0.6); 
-    display: flex; 
-    justify-content: center;
-    align-items: center; 
-    z-index: 9999; 
-    backdrop-filter: blur(4px);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: flex; justify-content: center;
+    align-items: center; z-index: 9999; backdrop-filter: blur(4px);
 }
-
 .modal-box {
-    background: var(--bg-card); 
-    padding: 32px; 
-    border-radius: 16px;
-    width: 90%; 
-    max-width: 450px; 
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border-color);
+    background: var(--bg-card); padding: 32px; border-radius: 16px;
+    width: 90%; max-width: 450px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);
 }
-
-/* Grid Layouts for General Manage */
-.grid-layout-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.manage-sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px; }
-
-.col-title { font-size: 1.1rem; margin-bottom: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
 
 /* Content List Styles */
 .manage-list-item {
@@ -487,185 +429,286 @@ body.dashboard-body {
     flex-wrap: wrap;
 }
 .manage-list-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
-
 .manage-list-info h4 { margin-bottom: 4px; color: var(--text-main); font-size: 0.95rem; }
 .manage-list-info p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
 
 .manage-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .action-sm {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: white;
-    transition: opacity 0.2s;
+    padding: 6px 12px; border-radius: 6px; border: none; font-size: 0.75rem;
+    font-weight: 600; cursor: pointer; color: white; transition: opacity 0.2s;
 }
 .action-sm:hover { opacity: 0.9; }
-
 .copy-btn { background: var(--secondary); }
 .edit-btn { background: var(--primary); }
 .delete-btn { background: var(--danger); }
 
-/* --- Login Screen Styles --- */
-.login-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--bg-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.login-box {
-    background: var(--bg-card);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border-color);
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
-    animation: fadeIn 0.5s ease;
-}
-
-.login-input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    background: var(--input-bg);
-    color: var(--text-main);
-    font-size: 1rem;
-    transition: all 0.3s;
-    text-align: center;
-    letter-spacing: 2px;
-}
-
-.login-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+/* Responsive (Desktop/Tablet) */
+@media (max-width: 992px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; }
+    .form-grid { grid-template-columns: 1fr; }
 }
 
 /* =========================================
-   ADMIN PANEL - MOBILE RESPONSIVENESS
+   PREMIUM MOBILE RESPONSIVENESS (App Style)
    ========================================= */
 @media screen and (max-width: 768px) {
-    /* ഡാഷ്‌ബോർഡ് ലേഔട്ട് താഴേക്ക് മാറ്റുന്നു */
     .dashboard-layout {
         flex-direction: column !important;
         display: flex;
     }
     
-    /* സൈഡ്ബാർ മൊബൈലിൽ മുകളിലായി കാണിക്കാൻ */
+    /* Sleek Mobile Top Sidebar */
     .sidebar {
         width: 100% !important;
         height: auto !important;
         position: relative !important;
-        padding: 15px !important;
+        padding: 15px 20px 20px 20px !important;
         display: flex;
         flex-direction: column;
         border-right: none !important;
         border-bottom: 1px solid var(--border-color);
+        background: var(--bg-card);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
     
-    /* മെനു ബട്ടണുകൾ വരിവരിയായി വരാൻ */
+    /* Logo adjustments */
+    .sidebar-brand {
+        padding: 0 0 10px 0;
+        border-bottom: none;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+    
+    .sidebar-brand h2 {
+        font-size: 1.15rem;
+    }
+    
+    .badge-admin {
+        display: none; /* Hide badge on mobile to save space */
+    }
+    
+    /* Segmented Control (iOS style tabs) */
     .sidebar-menu {
         display: flex;
         flex-direction: row;
-        gap: 10px;
-        margin-top: 15px;
+        background: var(--input-bg);
+        border-radius: 12px;
+        padding: 5px;
         width: 100%;
-        padding: 0;
+        gap: 0;
     }
     
     .menu-label {
-        display: none; /* MAIN MENU എന്ന ടെക്സ്റ്റ് ഒഴിവാക്കുന്നു */
+        display: none;
     }
     
     .tab-btn {
         flex: 1;
         justify-content: center;
         padding: 10px;
-        font-size: 0.9rem;
+        margin-bottom: 0;
+        font-size: 0.85rem;
+        background: transparent;
+        color: var(--text-muted);
+        border-radius: 8px;
+        box-shadow: none;
+        text-align: center;
     }
     
-    /* ലോഗൗട്ട്, ബാക്ക് ബട്ടണുകൾ */
+    .tab-btn.active {
+        background: var(--bg-card);
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .tab-btn i {
+        display: none; /* Hide icons in tab on mobile for cleaner look */
+    }
+    
+    /* Minimal Footer / Logout Row */
     .sidebar-footer {
         display: flex;
-        justify-content: space-between;
         flex-direction: row;
+        justify-content: space-around;
+        padding: 15px 0 0 0;
         margin-top: 15px;
-        padding-top: 15px;
         border-top: 1px solid var(--border-color);
-        padding-bottom: 0;
     }
 
     .sidebar-footer .back-link {
-        margin-top: 0 !important;
-        font-size: 0.9rem;
+        margin: 0 !important;
+        font-size: 0.85rem;
     }
     
-    /* മെയിൻ കണ്ടന്റ് സ്ക്രീനിൽ ഒതുക്കാൻ */
+    /* Main Content Area */
     .main-content {
         margin-left: 0 !important;
         width: 100% !important;
+        padding-bottom: 40px;
     }
 
+    /* Single Line Sleek Topbar */
     .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        padding: 15px;
+        padding: 15px 20px;
         height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    body.dark-mode .topbar {
+        background: rgba(30, 41, 59, 0.85);
+    }
+
+    .page-title {
+        font-size: 1.15rem;
     }
     
     .topbar-actions {
-        width: 100%;
-        justify-content: space-between;
+        gap: 12px;
     }
 
-    /* Content Wrapper Padding adjustments */
+    .admin-info {
+        display: none; /* Hide "Administrator" text */
+    }
+
+    .admin-profile {
+        padding-left: 0;
+        border-left: none;
+    }
+    
+    .admin-profile img {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Content Wrapper Padding */
     .content-wrapper {
         padding: 15px;
     }
 
-    /* ഫോമുകൾ മാറ്റുന്നു */
-    .form-grid {
-        grid-template-columns: 1fr;
+    /* App-like Premium Card */
+    .premium-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+    }
+    
+    body.dark-mode .premium-card {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.25);
     }
 
-    /* മാനേജ് സെക്ഷനിലെ കാർഡുകൾ ഒന്നായി കാണിക്കാൻ */
+    .card-header {
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+        gap: 15px;
+    }
+    
+    .card-header h2 {
+        font-size: 1.15rem;
+    }
+    
+    .card-header p {
+        font-size: 0.8rem;
+    }
+
+    .header-icon {
+        margin-left: auto;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    /* Premium Forms */
+    .premium-form {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-group label {
+        font-size: 0.8rem;
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+        padding: 14px;
+        font-size: 16px; /* Prevents auto-zoom on iOS */
+        border-radius: 12px;
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Full Width Action Buttons */
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 24px;
+        padding-top: 20px;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+
+    /* Manage Section Grid */
     .manage-sections-grid {
         grid-template-columns: 1fr !important;
-        padding: 10px;
+        padding: 0;
+        gap: 20px;
     }
     
     .click-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .view-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 12px;
+        margin-bottom: 15px;
     }
 
     .view-header button {
         width: 100%;
         justify-content: center;
+        padding: 12px;
+        border-radius: 10px;
     }
-
-    .card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+    
+    .breadcrumbs {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+        margin-bottom: 15px;
     }
-
-    .header-icon {
-        align-self: flex-start;
+    
+    /* Fix Options Dropdown for mobile */
+    .dropdown-menu {
+        right: 0;
+        left: auto;
     }
 }
