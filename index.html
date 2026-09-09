@@ -29,7 +29,8 @@
             <a href="#" class="tg-btn" title="Join Telegram Group">
                 <i class="fa-brands fa-telegram"></i>
             </a>
-            <a href="https://youtube.com/@EducationWithIn" target="_blank" class="yt-btn">
+            <!-- Cleaned YouTube Link -->
+            <a href="https://www.youtube.com/@educationwithai1.0" target="_blank" class="yt-btn">
                 <i class="fa-brands fa-youtube"></i> Subscribe
             </a>
         </div>
@@ -102,7 +103,8 @@
             <h3><i class="fa-solid fa-lock" style="color: #ef4444;"></i> Unlock PDF Note</h3>
             <p>താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്ത് യൂട്യൂബ് ചാനൽ സബ്സ്ക്രൈബ് ചെയ്താൽ മാത്രമേ നോട്ട് ഡൗൺലോഡ് ചെയ്യാൻ സാധിക്കൂ.</p>
             
-            <a href="https://youtube.com/@EducationWithIn?sub_confirmation=1" target="_blank" id="subBtn" class="action-btn yt-btn" style="margin-bottom: 15px; width: 100%; justify-content: center;">
+            <!-- Cleaned YouTube Link with sub_confirmation -->
+            <a href="https://www.youtube.com/@educationwithai1.0?sub_confirmation=1" target="_blank" id="subBtn" class="action-btn yt-btn" style="margin-bottom: 15px; width: 100%; justify-content: center;">
                 <i class="fa-brands fa-youtube"></i> 1. Click to Subscribe
             </a>
 
@@ -181,6 +183,7 @@
         let allNotes = [];
         let allCourses = [];
         let allProgrammes = [];
+        let allSemesters = [];
 
         // Pagination Variables
         let currentFilteredVideos = [];
@@ -200,6 +203,14 @@
                 progFilter.innerHTML = '<option value="all">All Programmes</option>';
                 allProgrammes.forEach(p => {
                     progFilter.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+                });
+
+                let semRes = await fetch(`${API_BASE_URL}/semesters`);
+                allSemesters = await semRes.json();
+                const semFilter = document.getElementById('semesterFilter');
+                semFilter.innerHTML = '<option value="all">All Semesters</option>';
+                allSemesters.forEach(s => {
+                    semFilter.innerHTML += `<option value="${s.id}">${s.name}</option>`;
                 });
 
                 let courseRes = await fetch(`${API_BASE_URL}/courses`);
@@ -261,23 +272,29 @@
             
             const searchText = document.getElementById('searchInput').value.toLowerCase();
             const progId = document.getElementById('programmeFilter').value;
-            const sem = document.getElementById('semesterFilter').value;
+            const semId = document.getElementById('semesterFilter').value;
 
-            // വീഡിയോ ഫിൽറ്ററിംഗ്
+            // വീഡിയോ ഫിൽറ്ററിംഗ് 
             currentFilteredVideos = allVideos.filter(item => {
                 const course = allCourses.find(c => c.id === item.course_id);
+                const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
+                
                 const matchesSearch = item.title.toLowerCase().includes(searchText) || item.description.toLowerCase().includes(searchText) || item.block.toLowerCase().includes(searchText);
-                const matchesSem = (sem === 'all') || (item.semester === sem);
-                const matchesProg = (progId === 'all') || (course && String(course.programme_id) === progId);
+                const matchesSem = (semId === 'all') || (course && String(course.semester_id) === semId);
+                const matchesProg = (progId === 'all') || (semester && String(semester.programme_id) === progId);
+                
                 return matchesSearch && matchesSem && matchesProg;
             });
 
-            // നോട്ട് ഫിൽറ്ററിംഗ്
+            // നോട്ട് ഫിൽറ്ററിംഗ് 
             currentFilteredNotes = allNotes.filter(item => {
                 const course = allCourses.find(c => c.id === item.course_id);
+                const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
+                
                 const matchesSearch = item.title.toLowerCase().includes(searchText) || item.description.toLowerCase().includes(searchText) || item.block.toLowerCase().includes(searchText);
-                const matchesSem = (sem === 'all') || (item.semester === sem);
-                const matchesProg = (progId === 'all') || (course && String(course.programme_id) === progId);
+                const matchesSem = (semId === 'all') || (course && String(course.semester_id) === semId);
+                const matchesProg = (progId === 'all') || (semester && String(semester.programme_id) === progId);
+                
                 return matchesSearch && matchesSem && matchesProg;
             });
 
@@ -335,13 +352,16 @@
                 else if (ytId.includes('youtu.be/')) ytId = ytId.split('youtu.be/')[1].substring(0, 11);
 
                 const course = allCourses.find(c => c.id === video.course_id);
+                const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
+                
                 const courseName = course ? course.name : 'Unknown Course';
+                const semName = semester ? semester.name : 'Unknown';
 
                 const card = `
                     <div class="card video-card">
                         <div class="thumbnail-wrapper">
                             <img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="Video Thumbnail">
-                            <span class="badge">Semester ${video.semester}</span>
+                            <span class="badge">${semName}</span>
                         </div>
                         <div class="card-info">
                             <h3>${video.block} - ${video.unit || ''}: ${video.title}</h3>
@@ -367,13 +387,16 @@
 
             notes.forEach(note => {
                 const course = allCourses.find(c => c.id === note.course_id);
+                const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
+                
                 const courseName = course ? course.name : 'Unknown Course';
+                const semName = semester ? semester.name : 'Unknown';
 
                 const card = `
                     <div class="card note-card">
                         <div class="card-header">
                             <i class="fa-solid fa-file-pdf pdf-icon"></i>
-                            <span class="badge note-badge">Semester ${note.semester}</span>
+                            <span class="badge note-badge">${semName}</span>
                         </div>
                         <div class="card-info">
                             <h3>${note.block} - ${note.title}</h3>
