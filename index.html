@@ -6,30 +6,39 @@
     <title>Education With In - Classes & Notes</title>
     <link rel="stylesheet" href="style.css">
     <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Announcement Banner -->
-    <div class="announcement-banner">
-        <i class="fa-solid fa-bell"></i> പുതിയ അധ്യായങ്ങളുടെ ക്ലാസുകളും നോട്ടുകളും അപ്‌ലോഡ് ചെയ്തിട്ടുണ്ട്!
-    </div>
-
     <!-- Header Navigation -->
     <header class="navbar">
         <div class="logo">
-            <i class="fa-solid fa-graduation-cap"></i>
+            <!-- ലോഗോ ഇമേജ് ഇവിടെ നൽകുക -->
+            <img src="your-logo.png" alt="Logo" class="brand-logo">
             <span>Education With In</span>
         </div>
         <div class="header-actions">
             <button id="theme-toggle" class="icon-btn" title="Toggle Dark Mode">
                 <i class="fa-solid fa-moon"></i>
             </button>
-            <a href="#" class="tg-btn" title="Join Telegram Group">
-                <i class="fa-brands fa-telegram"></i>
-            </a>
-            <!-- Cleaned YouTube Link -->
+            
+            <!-- Premium WhatsApp Dropdown -->
+            <div class="wa-dropdown-wrapper">
+                <button class="wa-btn" id="waToggleBtn" title="Join WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </button>
+                <div class="wa-dropdown-menu" id="waDropdown">
+                    <a href="https://chat.whatsapp.com/BhlWbpjieD2A4CxbuVH5ct?s=cl&p=i&mlu=4&ilr=4" target="_blank">
+                        <i class="fa-solid fa-users"></i> Join WhatsApp Group
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029VbDR6547YSd3QfTLdr0A" target="_blank">
+                        <i class="fa-solid fa-bullhorn"></i> Join WhatsApp Channel
+                    </a>
+                </div>
+            </div>
+
+            <!-- YouTube Subscribe Button -->
             <a href="https://www.youtube.com/@educationwithai1.0" target="_blank" class="yt-btn">
                 <i class="fa-brands fa-youtube"></i> Subscribe
             </a>
@@ -62,12 +71,10 @@
 
             <select class="category-filter" id="semesterFilter">
                 <option value="all">All Semesters</option>
-                <option value="1">Semester 1</option>
-                <option value="2">Semester 2</option>
-                <option value="3">Semester 3</option>
-                <option value="4">Semester 4</option>
-                <option value="5">Semester 5</option>
-                <option value="6">Semester 6</option>
+            </select>
+
+            <select class="category-filter" id="courseFilter">
+                <option value="all">All Courses</option>
             </select>
         </div>
 
@@ -75,11 +82,11 @@
         <section id="classes-tab" class="tab-content active">
             <h2 class="section-title">Latest Classes</h2>
             <div class="grid-container" id="videoContainer">
-                <p style="text-align: center; width: 100%;">Loading videos...</p>
+                <p style="text-align: center; width: 100%; color: var(--secondary-text);">Loading videos...</p>
             </div>
             <!-- Load More Button for Videos -->
             <div id="loadMoreVidContainer" style="text-align: center; margin-top: 30px; display: none;">
-                <button onclick="loadMoreVideos()" class="tab-btn" style="display: inline-block; margin: 0 auto;">Load More Classes <i class="fa-solid fa-angle-down"></i></button>
+                <button onclick="loadMoreVideos()" class="tab-btn" style="display: inline-block; margin: 0 auto; background: var(--input-bg);">Load More Classes <i class="fa-solid fa-angle-down"></i></button>
             </div>
         </section>
 
@@ -87,23 +94,23 @@
         <section id="notes-tab" class="tab-content">
             <h2 class="section-title">Download Class Notes</h2>
             <div class="grid-container" id="noteContainer">
-                <p style="text-align: center; width: 100%;">Loading notes...</p>
+                <p style="text-align: center; width: 100%; color: var(--secondary-text);">Loading notes...</p>
             </div>
             <!-- Load More Button for Notes -->
             <div id="loadMoreNoteContainer" style="text-align: center; margin-top: 30px; display: none;">
-                <button onclick="loadMoreNotes()" class="tab-btn" style="display: inline-block; margin: 0 auto;">Load More Notes <i class="fa-solid fa-angle-down"></i></button>
+                <button onclick="loadMoreNotes()" class="tab-btn" style="display: inline-block; margin: 0 auto; background: var(--input-bg);">Load More Notes <i class="fa-solid fa-angle-down"></i></button>
             </div>
         </section>
 
     </main>
 
-    <!-- Subscribe to Unlock Modal (Popup) -->
+    <!-- Subscribe to Unlock Modal (App-style Bottom Sheet on Mobile) -->
     <div id="unlockModal" class="modal-overlay">
         <div class="unlock-box">
-            <h3><i class="fa-solid fa-lock" style="color: #ef4444;"></i> Unlock PDF Note</h3>
+            <div class="bottom-sheet-drag"></div>
+            <h3><i class="fa-solid fa-lock" style="color: #e11d48;"></i> Unlock PDF Note</h3>
             <p>താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്ത് യൂട്യൂബ് ചാനൽ സബ്സ്ക്രൈബ് ചെയ്താൽ മാത്രമേ നോട്ട് ഡൗൺലോഡ് ചെയ്യാൻ സാധിക്കൂ.</p>
             
-            <!-- Cleaned YouTube Link with sub_confirmation -->
             <a href="https://www.youtube.com/@educationwithai1.0?sub_confirmation=1" target="_blank" id="subBtn" class="action-btn yt-btn" style="margin-bottom: 15px; width: 100%; justify-content: center;">
                 <i class="fa-brands fa-youtube"></i> 1. Click to Subscribe
             </a>
@@ -122,6 +129,21 @@
 
     <!-- Scripts for Interactivity & Backend Data -->
     <script>
+        // --- WhatsApp Dropdown Logic ---
+        const waToggleBtn = document.getElementById('waToggleBtn');
+        const waDropdown = document.getElementById('waDropdown');
+
+        waToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            waDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!waToggleBtn.contains(e.target) && !waDropdown.contains(e.target)) {
+                waDropdown.classList.remove('show');
+            }
+        });
+
         // --- Tab Switching Logic ---
         function switchTab(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -176,6 +198,13 @@
             unlockModal.style.display = 'none';
         }
 
+        // Close modal when clicking outside (overlay)
+        unlockModal.addEventListener('click', function(e) {
+            if (e.target === unlockModal) {
+                closeModal();
+            }
+        });
+
         // --- Fetch Data & Advanced Filtering & Pagination Logic ---
         const API_BASE_URL = 'https://education-backend-x9vo.onrender.com/api';
         
@@ -185,7 +214,6 @@
         let allProgrammes = [];
         let allSemesters = [];
 
-        // Pagination Variables
         let currentFilteredVideos = [];
         let currentFilteredNotes = [];
         let videoLimit = 6; 
@@ -215,6 +243,12 @@
 
                 let courseRes = await fetch(`${API_BASE_URL}/courses`);
                 allCourses = await courseRes.json();
+                
+                const courseFilter = document.getElementById('courseFilter');
+                courseFilter.innerHTML = '<option value="all">All Courses</option>';
+                allCourses.forEach(c => {
+                    courseFilter.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                });
 
                 let vidRes = await fetch(`${API_BASE_URL}/videos`);
                 allVideos = await vidRes.json();
@@ -262,10 +296,10 @@
             }
         }
 
-        // ഫിൽറ്റർ ഇവൻ്റുകൾ
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         document.getElementById('programmeFilter').addEventListener('change', applyFilters);
         document.getElementById('semesterFilter').addEventListener('change', applyFilters);
+        document.getElementById('courseFilter').addEventListener('change', applyFilters);
 
         function applyFilters() {
             window.history.replaceState(null, '', window.location.pathname);
@@ -273,8 +307,8 @@
             const searchText = document.getElementById('searchInput').value.toLowerCase();
             const progId = document.getElementById('programmeFilter').value;
             const semId = document.getElementById('semesterFilter').value;
+            const courseId = document.getElementById('courseFilter').value;
 
-            // വീഡിയോ ഫിൽറ്ററിംഗ് 
             currentFilteredVideos = allVideos.filter(item => {
                 const course = allCourses.find(c => c.id === item.course_id);
                 const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
@@ -282,11 +316,11 @@
                 const matchesSearch = item.title.toLowerCase().includes(searchText) || item.description.toLowerCase().includes(searchText) || item.block.toLowerCase().includes(searchText);
                 const matchesSem = (semId === 'all') || (course && String(course.semester_id) === semId);
                 const matchesProg = (progId === 'all') || (semester && String(semester.programme_id) === progId);
+                const matchesCourse = (courseId === 'all') || (String(item.course_id) === courseId);
                 
-                return matchesSearch && matchesSem && matchesProg;
+                return matchesSearch && matchesSem && matchesProg && matchesCourse;
             });
 
-            // നോട്ട് ഫിൽറ്ററിംഗ് 
             currentFilteredNotes = allNotes.filter(item => {
                 const course = allCourses.find(c => c.id === item.course_id);
                 const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
@@ -294,11 +328,11 @@
                 const matchesSearch = item.title.toLowerCase().includes(searchText) || item.description.toLowerCase().includes(searchText) || item.block.toLowerCase().includes(searchText);
                 const matchesSem = (semId === 'all') || (course && String(course.semester_id) === semId);
                 const matchesProg = (progId === 'all') || (semester && String(semester.programme_id) === progId);
+                const matchesCourse = (courseId === 'all') || (String(item.course_id) === courseId);
                 
-                return matchesSearch && matchesSem && matchesProg;
+                return matchesSearch && matchesSem && matchesProg && matchesCourse;
             });
 
-            // ലിമിറ്റ് റീസെറ്റ് ചെയ്യുന്നു
             currentVidCount = videoLimit;
             currentNoteCount = noteLimit;
 
@@ -306,7 +340,6 @@
             renderNotes();
         }
 
-        // Pagination Render Functions
         function renderVideos() {
             displayVideos(currentFilteredVideos.slice(0, currentVidCount));
             const loadMoreBtn = document.getElementById('loadMoreVidContainer');
@@ -327,22 +360,16 @@
             }
         }
 
-        function loadMoreVideos() {
-            currentVidCount += videoLimit;
-            renderVideos();
-        }
+        function loadMoreVideos() { currentVidCount += videoLimit; renderVideos(); }
+        function loadMoreNotes() { currentNoteCount += noteLimit; renderNotes(); }
 
-        function loadMoreNotes() {
-            currentNoteCount += noteLimit;
-            renderNotes();
-        }
-
+        // Updated displayVideos function (Clean Premium Look)
         function displayVideos(videos) {
             const container = document.getElementById('videoContainer');
             container.innerHTML = ''; 
 
             if(videos.length === 0) {
-                container.innerHTML = '<p style="text-align: center; width: 100%;">No classes found matching your search.</p>';
+                container.innerHTML = '<p style="text-align: center; width: 100%; color: var(--secondary-text);">No classes found matching your search.</p>';
                 return;
             }
 
@@ -353,19 +380,15 @@
 
                 const course = allCourses.find(c => c.id === video.course_id);
                 const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
-                
-                const courseName = course ? course.name : 'Unknown Course';
                 const semName = semester ? semester.name : 'Unknown';
 
                 const card = `
-                    <div class="card video-card">
+                    <div class="card premium-card">
                         <div class="thumbnail-wrapper">
                             <img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="Video Thumbnail">
                             <span class="badge">${semName}</span>
                         </div>
-                        <div class="card-info">
-                            <h3>${video.block} - ${video.unit || ''}: ${video.title}</h3>
-                            <p><strong>${courseName}</strong><br>${video.description}</p>
+                        <div class="card-info compact-card-info">
                             <a href="https://www.youtube.com/watch?v=${ytId}" target="_blank" class="action-btn watch-btn">
                                 <i class="fa-solid fa-play"></i> Watch Video
                             </a>
@@ -376,31 +399,36 @@
             });
         }
 
+        // Updated displayNotes function (Matches Video Layout Exactly)
         function displayNotes(notes) {
             const container = document.getElementById('noteContainer');
             container.innerHTML = '';
 
             if(notes.length === 0) {
-                container.innerHTML = '<p style="text-align: center; width: 100%;">No notes found matching your search.</p>';
+                container.innerHTML = '<p style="text-align: center; width: 100%; color: var(--secondary-text);">No notes found matching your search.</p>';
                 return;
             }
 
             notes.forEach(note => {
                 const course = allCourses.find(c => c.id === note.course_id);
                 const semester = course ? allSemesters.find(s => s.id === course.semester_id) : null;
-                
                 const courseName = course ? course.name : 'Unknown Course';
                 const semName = semester ? semester.name : 'Unknown';
 
+                // കാർഡിൽ കോഴ്‌സിന്റെ പേരും ബ്ലോക്കും മാത്രം കാണിക്കുന്ന രീതിയിൽ മാറ്റിയിരിക്കുന്നു
                 const card = `
-                    <div class="card note-card">
-                        <div class="card-header">
-                            <i class="fa-solid fa-file-pdf pdf-icon"></i>
+                    <div class="card premium-card">
+                        <div class="thumbnail-wrapper">
+                            <div class="note-thumbnail-bg">
+                                <div class="note-thumb-content">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    <h4>${courseName}</h4>
+                                    <p>${note.block}</p>
+                                </div>
+                            </div>
                             <span class="badge note-badge">${semName}</span>
                         </div>
-                        <div class="card-info">
-                            <h3>${note.block} - ${note.title}</h3>
-                            <p><strong>${courseName}</strong><br>${note.description}</p>
+                        <div class="card-info compact-card-info">
                             <a href="javascript:void(0)" onclick="openUnlocker('${note.pdf_link}')" class="action-btn download-btn">
                                 <i class="fa-solid fa-lock"></i> Subscribe to Unlock
                             </a>
