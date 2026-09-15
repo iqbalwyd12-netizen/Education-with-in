@@ -626,7 +626,8 @@ footer {
     /* ========================================= */
     /* UNIFIED CIRCULAR HEADER BUTTONS ON MOBILE */
     /* ========================================= */
-    .icon-btn, .wa-btn, .yt-btn {
+    /* .header-actions ഉപയോഗിച്ച് ഹെഡറിലെ ബട്ടണുകൾക്ക് മാത്രം വലിപ്പം നൽകുന്നു */
+    .icon-btn, .wa-btn, .header-actions .yt-btn {
         width: 38px !important;
         height: 38px !important;
         padding: 0 !important;
@@ -637,14 +638,14 @@ footer {
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    /* Hide text inside YouTube button completely on mobile */
-    .yt-btn {
+    /* Hide text inside Header YouTube button completely on mobile */
+    .header-actions .yt-btn {
         font-size: 0 !important; 
         gap: 0 !important; 
     }
     
-    /* Set icon sizes perfectly centered */
-    .icon-btn i, .wa-btn i, .yt-btn i {
+    /* Set icon sizes perfectly centered only for Header Buttons */
+    .icon-btn i, .wa-btn i, .header-actions .yt-btn i {
         font-size: 1.15rem !important; 
         margin: 0 !important;
     }
@@ -734,7 +735,7 @@ footer {
     }
 
     .premium-card {
-        border-radius: 16px; 
+        border-radius: 14px; 
     }
 
     .badge {
@@ -816,12 +817,12 @@ footer {
     .header-actions {
         gap: 5px;
     }
-    /* Scale down the uniform buttons for extremely small screens */
-    .icon-btn, .wa-btn, .yt-btn {
+    /* Scale down the uniform buttons for extremely small screens only in Header */
+    .icon-btn, .wa-btn, .header-actions .yt-btn {
         width: 34px !important;
         height: 34px !important;
     }
-    .icon-btn i, .wa-btn i, .yt-btn i {
+    .icon-btn i, .wa-btn i, .header-actions .yt-btn i {
         font-size: 1.05rem !important;
     }
 }
